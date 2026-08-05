@@ -59,7 +59,7 @@ window.HVC.CONFIG = {
   // The key is used client-side (this is a static site with no backend),
   // so make sure you restrict it to your GitHub Pages domain + the
   // YouTube Data API v3 in the Google Cloud Console.
-  API_KEY: "YOUR_YOUTUBE_API_KEY_HERE",
+  API_KEY: AIzaSyAeELB4shvC0_NJRVFBx2L0ZCnZL4LXoP0
 
   // How many of each channel's most recent uploads to pull per refresh.
   // Higher = more complete charts, but costs more API quota per refresh.
