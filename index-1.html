@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Haryanvi Charts | The Official Home of Haryanvi Music Rankings</title>
+  <meta name="description" content="Haryanvi Charts tracks the biggest Haryanvi songs, artists and new releases every week — real YouTube data, ranked by a transparent chart formula. No login. No cost.">
+  <meta name="keywords" content="Haryanvi songs, Haryanvi music chart, Haryanvi top 100, Haryanvi new releases, Sonotek, Mor Haryanvi, Speed Records Haryanvi">
+  <meta name="author" content="Haryanvi Charts">
+  <meta name="robots" content="index, follow">
+
+  <!-- Open Graph / Social sharing -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Haryanvi Charts — The Pulse of Haryanvi Music">
+  <meta property="og:description" content="Weekly Top 100, trending songs, top artists and fresh releases — all ranked live from YouTube.">
+  <meta property="og:image" content="assets/og-cover.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230B0D12'/%3E%3Ctext x='50' y='68' font-size='58' text-anchor='middle' fill='%23E3B23C' font-family='Arial Black,sans-serif' font-weight='900'%3EH%3C/text%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===================== ANIMATED LOADING SCREEN ===================== -->
+  <div id="loading-screen" aria-hidden="true">
+    <div class="loader-mark">
+      <span class="loader-letter">H</span>
+      <svg class="loader-ring" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="44"></circle>
+      </svg>
+    </div>
+    <p class="loader-text">Tallying the charts<span class="dots"><span>.</span><span>.</span><span>.</span></span></p>
+  </div>
+
+  <!-- Skip link for keyboard / screen reader users -->
+  <a class="skip-link" href="#main-content">Skip to content</a>
+
+  <!-- ===================== HEADER / NAV ===================== -->
+  <header class="site-header" id="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="logo" aria-label="Haryanvi Charts home">
+        <span class="logo-mark">H</span>
+        <span class="logo-text">Haryanvi<em>Charts</em></span>
+      </a>
+
+      <nav class="main-nav" id="main-nav" aria-label="Primary">
+        <a href="index.html" class="nav-link is-active">Home</a>
+        <a href="top100.html" class="nav-link">Top 100</a>
+        <a href="artists.html" class="nav-link">Artists</a>
+        <a href="latest.html" class="nav-link">Latest Releases</a>
+        <a href="about.html" class="nav-link">About</a>
+      </nav>
+
+      <div class="header-actions">
+        <button id="theme-toggle" class="icon-btn" type="button" aria-label="Toggle theme" title="Toggle theme">
+          <svg viewBox="0 0 24 24" class="icon-sun"><path d="M12 4V2m0 20v-2m8-8h2M2 12h2m14.14 6.14 1.42 1.42M4.44 4.44l1.42 1.42m0 12.28-1.42 1.42M19.56 4.44l-1.42 1.42M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>
+          <svg viewBox="0 0 24 24" class="icon-moon"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5Z" stroke="currentColor" stroke-width="1.8" fill="none" stroke-linejoin="round"/></svg>
+        </button>
+        <button id="nav-toggle" class="icon-btn nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="main-nav">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+
+    <!-- ===================== HERO ===================== -->
+    <section class="hero">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-inner">
+
+        <div class="hero-badge">
+          <span class="live-dot" aria-hidden="true"></span>
+          Live rankings &middot; updated from YouTube
+        </div>
+
+        <h1 class="hero-title">
+          <span class="hero-mark">H</span>arya<span class="hero-highlight">nvi</span> Charts
+        </h1>
+        <p class="hero-subtitle">The scoreboard for Haryanvi music — every trending anthem, every rising artist, ranked by the numbers.</p>
+
+        <!-- Trending Banner (ticker) -->
+        <div class="trending-banner" aria-label="Trending now">
+          <span class="trending-tag">Trending Now</span>
+          <div class="ticker" id="trending-ticker">
+            <div class="ticker-track" id="ticker-track">
+              <span class="ticker-item">Loading trending songs&hellip;</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search Bar -->
+        <form class="hero-search" id="search-form" role="search">
+          <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35M19 11a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"/></svg>
+          <input type="search" id="search-input" placeholder="Search song, artist or label…" aria-label="Search song, artist or label" autocomplete="off">
+          <button type="submit" class="btn btn-primary search-submit">Search</button>
+          <div class="search-suggestions" id="search-suggestions" hidden></div>
+        </form>
+
+        <div class="hero-ctas">
+          <a href="top100.html" class="btn btn-gold btn-lg">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19h16M6 19V9m6 10V4m6 15v-7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            View Weekly Top 100
+          </a>
+          <a href="#top-10" class="btn btn-ghost btn-lg">See Today's Top 10</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FILTER BAR ===================== -->
+    <div class="filter-bar" id="filter-bar">
+      <div class="filter-bar-inner">
+        <span class="filter-label">Time range:</span>
+        <div class="filter-chips" role="group" aria-label="Filter songs by time range">
+          <button class="chip is-active" data-range="today">Today</button>
+          <button class="chip" data-range="week">This Week</button>
+          <button class="chip" data-range="month">This Month</button>
+          <button class="chip" data-range="year">This Year</button>
+        </div>
+        <span class="last-updated" id="last-updated">—</span>
+      </div>
+    </div>
+
+    <!-- ===================== TOP 10 TRENDING ===================== -->
+    <section class="section" id="top-10" aria-labelledby="top10-heading">
+      <div class="section-inner">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Chart 01</span>
+            <h2 id="top10-heading">Top 10 Trending Songs</h2>
+          </div>
+          <a href="top100.html" class="section-link">Full Top 100 &rarr;</a>
+        </div>
+        <div class="chart-list" id="top10-list" data-count="10">
+          <!-- injected by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== NEW RELEASES ===================== -->
+    <section class="section section-alt" id="new-releases" aria-labelledby="new-releases-heading">
+      <div class="section-inner">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Fresh Drops</span>
+            <h2 id="new-releases-heading">New Releases</h2>
+          </div>
+          <a href="latest.html" class="section-link">See all &rarr;</a>
+        </div>
+        <div class="card-grid" id="new-releases-grid" data-count="8">
+          <!-- injected by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== TOP ARTISTS ===================== -->
+    <section class="section" id="top-artists" aria-labelledby="top-artists-heading">
+      <div class="section-inner">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">The Roster</span>
+            <h2 id="top-artists-heading">Top Artists</h2>
+          </div>
+          <a href="artists.html" class="section-link">All artists &rarr;</a>
+        </div>
+        <div class="artist-row" id="top-artists-row" data-count="10">
+          <!-- injected by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== FASTEST RISING ===================== -->
+    <section class="section section-alt" id="fastest-rising" aria-labelledby="fastest-rising-heading">
+      <div class="section-inner">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Momentum</span>
+            <h2 id="fastest-rising-heading">Fastest Rising Songs</h2>
+          </div>
+        </div>
+        <div class="chart-list" id="fastest-rising-list" data-count="6">
+          <!-- injected by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== MOST VIEWED ===================== -->
+    <section class="section" id="most-viewed" aria-labelledby="most-viewed-heading">
+      <div class="section-inner">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">All-Time</span>
+            <h2 id="most-viewed-heading">Most Viewed Songs</h2>
+          </div>
+        </div>
+        <div class="card-grid" id="most-viewed-grid" data-count="8">
+          <!-- injected by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== RECENTLY ADDED ===================== -->
+    <section class="section section-alt" id="recently-added" aria-labelledby="recently-added-heading">
+      <div class="section-inner">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Just In</span>
+            <h2 id="recently-added-heading">Recently Added Songs</h2>
+          </div>
+        </div>
+        <div class="card-grid" id="recently-added-grid" data-count="8">
+          <!-- injected by app.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Empty / error state (hidden by default, shown by app.js if API fails) -->
+    <div class="state-banner" id="state-banner" hidden></div>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="index.html" class="logo">
+          <span class="logo-mark">H</span>
+          <span class="logo-text">Haryanvi<em>Charts</em></span>
+        </a>
+        <p>Independent chart tracker for Haryanvi music, built on public YouTube data. Not affiliated with any label or artist.</p>
+        <div class="share-row">
+          <button class="icon-btn" id="share-btn" type="button" aria-label="Share Haryanvi Charts">
+            <svg viewBox="0 0 24 24"><path d="M18 8a3 3 0 1 0-2.83-4H15a3 3 0 0 0 .09 4.26L8.6 12.1a3 3 0 1 0 0 3.8l6.5 3.84A3 3 0 1 0 16 17.5a3 3 0 0 0-.09-.5L9 12.9a3 3 0 0 0 0-1.8l6.91-4.09c.32.24.68.42 1.09.5Z" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linejoin="round"/></svg>
+            Share
+          </button>
+          <button class="icon-btn" id="copy-link-btn" type="button" aria-label="Copy link">
+            <svg viewBox="0 0 24 24"><path d="M9 15 15 9m-4.5-3.5 1.44-1.44a3.5 3.5 0 1 1 4.95 4.95L15.44 10.5M13.5 18.5l-1.44 1.44a3.5 3.5 0 1 1-4.95-4.95L8.56 13.5" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>
+            Copy link
+          </button>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <div class="footer-col">
+          <h3>Explore</h3>
+          <a href="top100.html">Weekly Top 100</a>
+          <a href="artists.html">Top Artists</a>
+          <a href="latest.html">Latest Releases</a>
+        </div>
+        <div class="footer-col">
+          <h3>Site</h3>
+          <a href="about.html">About</a>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="README.md">Documentation</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; <span id="footer-year"></span> Haryanvi Charts. Chart data sourced from the YouTube Data API. All song titles, thumbnails and trademarks belong to their respective owners.</p>
+    </div>
+  </footer>
+
+  <button id="scroll-top-btn" class="scroll-top-btn" type="button" aria-label="Scroll to top" hidden>
+    <svg viewBox="0 0 24 24"><path d="M12 19V5m0 0-6 6m6-6 6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <!-- Toast for copy-link feedback -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- ===================== REUSABLE TEMPLATES ===================== -->
+
+  <!-- Song card used in .card-grid containers -->
+  <template id="song-card-template">
+    <article class="song-card">
+      <div class="song-card-thumb">
+        <span class="rank-badge"></span>
+        <img loading="lazy" decoding="async" src="" alt="" class="thumb-img">
+        <span class="duration-badge"></span>
+        <a class="play-overlay" href="" target="_blank" rel="noopener" aria-label="Watch on YouTube">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7-11-7Z" fill="currentColor"/></svg>
+        </a>
+      </div>
+      <div class="song-card-body">
+        <h3 class="song-title"></h3>
+        <p class="song-artist"></p>
+        <p class="song-meta">
+          <span class="song-label"></span>
+          <span class="dot-sep">&middot;</span>
+          <span class="song-date"></span>
+        </p>
+        <div class="song-stats">
+          <span class="stat stat-views"><svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z" stroke="currentColor" stroke-width="1.6" fill="none"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6" fill="none"/></svg><b></b></span>
+          <span class="stat stat-likes"><svg viewBox="0 0 24 24"><path d="M14 9V5a3 3 0 0 0-3-3l-1 8H4a2 2 0 0 0-2 2v2a2 2 0 0 0 2 2h11a3 3 0 0 0 3-2.4l1-6A2 2 0 0 0 17 5h-3Z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg><b></b></span>
+        </div>
+        <a class="btn btn-watch" href="" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7-11-7Z" fill="currentColor"/></svg>
+          Watch on YouTube
+        </a>
+      </div>
+    </article>
+  </template>
+
+  <!-- Chart row used in .chart-list containers (Top 10 / Fastest Rising) -->
+  <template id="chart-row-template">
+    <article class="chart-row">
+      <div class="chart-rank">
+        <span class="rank-number"></span>
+        <span class="rank-delta"></span>
+      </div>
+      <div class="chart-thumb">
+        <img loading="lazy" decoding="async" src="" alt="" class="thumb-img">
+      </div>
+      <div class="chart-info">
+        <h3 class="song-title"></h3>
+        <p class="song-artist"></p>
+        <p class="song-meta">
+          <span class="song-label"></span>
+          <span class="dot-sep">&middot;</span>
+          <span class="song-date"></span>
+        </p>
+      </div>
+      <div class="chart-stats">
+        <span class="stat stat-views"><b></b><small>views</small></span>
+        <span class="stat stat-likes"><b></b><small>likes</small></span>
+        <span class="stat stat-score"><b></b><small>score</small></span>
+      </div>
+      <a class="btn btn-watch btn-icon-only" href="" target="_blank" rel="noopener" aria-label="Watch on YouTube">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7-11-7Z" fill="currentColor"/></svg>
+      </a>
+    </article>
+  </template>
+
+  <!-- Artist card used in .artist-row -->
+  <template id="artist-card-template">
+    <article class="artist-card">
+      <div class="artist-avatar"><img loading="lazy" decoding="async" src="" alt=""></div>
+      <h3 class="artist-name"></h3>
+      <p class="artist-meta"><b class="artist-song-count"></b> tracked songs</p>
+      <p class="artist-meta artist-views"></p>
+    </article>
+  </template>
+
+  <!-- ===================== SCRIPTS ===================== -->
+  <!-- Order matters: channels -> api -> ranking -> app -->
+  <script src="channels.js"></script>
+  <script src="api.js"></script>
+  <script src="ranking.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
