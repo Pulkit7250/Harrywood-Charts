@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login — Harrywood Charts</title>
+<meta name="robots" content="noindex, nofollow">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin-style.css">
+</head>
+<body class="auth-body">
+
+  <div class="auth-glow" aria-hidden="true"></div>
+
+  <main class="auth-card">
+    <div class="auth-logo">
+      <span class="auth-logo-mark">H</span>
+      <span>Harrywood <em>Charts</em></span>
+    </div>
+    <p class="auth-subtitle">Admin Dashboard</p>
+
+    <form id="login-form" class="auth-form">
+      <label class="field">
+        <span>Email</span>
+        <input type="email" id="email" required autocomplete="username" placeholder="admin@example.com">
+      </label>
+      <label class="field">
+        <span>Password</span>
+        <input type="password" id="password" required autocomplete="current-password" placeholder="••••••••">
+      </label>
+
+      <p id="auth-error" class="auth-error" hidden></p>
+      <p id="auth-success" class="auth-success" hidden></p>
+
+      <button type="submit" class="btn-primary" id="login-btn">
+        <span class="btn-label">Sign In</span>
+        <span class="btn-spinner" hidden></span>
+      </button>
+
+      <button type="button" class="link-btn" id="forgot-password-btn">Forgot password?</button>
+    </form>
+
+    <p class="auth-footnote">Access restricted to authorized administrators only. Contact the site owner if you need access.</p>
+  </main>
+
+  <!-- Password reset modal -->
+  <div class="modal-overlay" id="reset-modal" hidden>
+    <div class="modal modal-sm">
+      <div class="modal-head"><h2>Reset Password</h2><button class="modal-close" data-close="reset-modal">&times;</button></div>
+      <div class="modal-body">
+        <p class="view-sub">Enter your admin email and we'll send a password reset link.</p>
+        <label class="field"><span>Email</span><input type="email" id="reset-email" placeholder="admin@example.com"></label>
+        <p id="reset-message" class="auth-success" hidden></p>
+        <div class="modal-footer">
+          <button type="button" class="btn-ghost" data-close="reset-modal">Cancel</button>
+          <button type="button" class="btn-accent" id="send-reset-btn">Send Reset Link</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.13.1/firebase-storage-compat.js"></script>
+  <script src="../firebase-config.js"></script>
+  <script src="auth.js"></script>
+  <script>
+    const form = document.getElementById("login-form");
+    const errorBox = document.getElementById("auth-error");
+    const loginBtn = document.getElementById("login-btn");
+
+    // If already logged in as an admin, skip straight to dashboard
+    window.HVC.auth.onAuthStateChanged(async (user) => {
+      if (user && await window.HVC.Auth.isAdmin(user.uid)) {
+        window.location.href = "dashboard.html";
+      }
+    });
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorBox.hidden = true;
+      loginBtn.disabled = true;
+      loginBtn.querySelector(".btn-label").hidden = true;
+      loginBtn.querySelector(".btn-spinner").hidden = false;
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+
+      try {
+        const user = await window.HVC.Auth.login(email, password);
+        const admin = await window.HVC.Auth.isAdmin(user.uid);
+        if (!admin) {
+          await window.HVC.auth.signOut();
+          throw { message: "This account is not authorized as an admin." };
+        }
+        window.location.href = "dashboard.html";
+      } catch (err) {
+        errorBox.textContent = err.message || "Login failed.";
+        errorBox.hidden = false;
+        loginBtn.disabled = false;
+        loginBtn.querySelector(".btn-label").hidden = false;
+        loginBtn.querySelector(".btn-spinner").hidden = true;
+      }
+    });
+
+    // Forgot password modal
+    const resetModal = document.getElementById("reset-modal");
+    document.getElementById("forgot-password-btn").addEventListener("click", () => {
+      document.getElementById("reset-email").value = document.getElementById("email").value;
+      resetModal.hidden = false;
+    });
+    document.querySelectorAll('[data-close="reset-modal"]').forEach(btn => {
+      btn.addEventListener("click", () => resetModal.hidden = true);
+    });
+    document.getElementById("send-reset-btn").addEventListener("click", async () => {
+      const email = document.getElementById("reset-email").value.trim();
+      const msg = document.getElementById("reset-message");
+      if (!email) return;
+      try {
+        await window.HVC.Auth.sendPasswordReset(email);
+        msg.textContent = "Reset link sent! Check your inbox.";
+        msg.hidden = false;
+      } catch (err) {
+        msg.textContent = err.message || "Could not send reset link.";
+        msg.hidden = false;
+      }
+    });
+  </script>
+</body>
+</html>

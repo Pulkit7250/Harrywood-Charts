@@ -1,0 +1,61 @@
+rules_version = '2';
+
+// ============================================================================
+// Firebase Storage Security Rules — Harrywood Charts
+// ----------------------------------------------------------------------------
+// Model: anyone can READ uploaded images (thumbnails need to load on the
+// public site). Only allow-listed admins (checked against the Firestore
+// /admins collection) can UPLOAD or DELETE files, and only image files
+// under 5MB.
+//
+// HOW TO APPLY THESE RULES
+// 1. Firebase Console → Storage → Rules tab
+// 2. Paste this entire file, replacing what's there
+// 3. Click "Publish"
+// ============================================================================
+
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAdmin() {
+      return request.auth != null &&
+        firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid));
+    }
+
+    match /songs/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin()
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    match /artists/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin()
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    match /labels/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin()
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    match /news/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin()
+        && request.resource.size < 5 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    match /settings/{fileName} {
+      allow read: if true;
+      allow write: if isAdmin()
+        && request.resource.size < 2 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+  }
+}
