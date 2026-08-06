@@ -22,12 +22,14 @@
 window.HVC = window.HVC || {};
 
 window.HVC.FIREBASE_CONFIG = {
-  apiKey: "YOUR_FIREBASE_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID",
+  const firebaseConfig = {
+  apiKey: "AIzaSyCddn7gPGVhMFrS1c4rzHU59vdC5bNox5M",
+  authDomain: "harrywood-charts.firebaseapp.com",
+  projectId: "harrywood-charts",
+  storageBucket: "harrywood-charts.firebasestorage.app",
+  messagingSenderId: "108603166095",
+  appId: "1:108603166095:web:b880ee3101097471f54ffa",
+  measurementId: "G-3L3R7HLFYN"
 };
 
 // Initialize Firebase (uses the compat SDK — no bundler required, works
